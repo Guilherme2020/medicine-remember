@@ -6,6 +6,7 @@ const MedicineSchema = new mongoose.Schema({
   date: Date,
   hour: String,
   recommendedByDoctor: Boolean,
+  description: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
