@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const URL_BASE = "http://192.168.100.8"
+
 const api = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: URL_BASE,
 });
 
 export default api;
