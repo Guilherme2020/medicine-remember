@@ -4,16 +4,18 @@ module.exports = {
 
   async login(req, res) {
     const { email } = req.body;
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
 
-    try{
+    try {
 
-      if(user){
-        res.json(user).json({message:"Login sucess"})
+      if (user) {
+        res.json(user).send({ message: "Login sucess" })
+      }else{
+        res.status(400).send({message: 'user not found'});
       }
 
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
 
