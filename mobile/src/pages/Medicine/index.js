@@ -23,26 +23,30 @@ export default function Medicine() {
 
   useEffect(() => {
 
-    const date = new Date();
+    const verify = () => {
 
-    const hour = new Date();
+      const date = new Date();
 
-    const search = medicineList.map((i) => {
+      const hour = new Date();
 
-      if (formatBrDate(i.date) === formatBrDate(date) && formatHour(i.hour) === formatHour(hour)) {
-        console.warn("teste");
+      const search = medicineList.map((i) => {
+
+        if (formatBrDate(i.date) === formatBrDate(date) && formatHour(i.hour) === formatHour(hour)) {
+          console.warn("teste");
+
+        }
+
+      })
+      if(search){
+
+        console.warn('enter');
 
       }
-
-    })
-    if(search){
-
-      console.warn('enter');
-
     }
+    verify();
 
 
-  },);
+  });
 
   const formatBrDate = (dateParams) => {
 
