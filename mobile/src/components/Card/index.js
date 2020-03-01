@@ -19,7 +19,7 @@ const Card = (props) => (
       </Content>
       <Content>
         <DateRemedy>
-          <Title> Horário de uso: {props.hour} hr</Title>
+          <Title> Horário de uso: {props.hour}H</Title>
         </DateRemedy>
       </Content>
       <Content>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container,List } from './styles';
+import { View } from 'react-native';
+import { Container, List } from './styles';
 import Card from '../../components/Card/index';
 import api from '../../services/api';
 import moment from "moment";
@@ -9,21 +10,50 @@ export default function Medicine() {
 
   useEffect(() => {
 
-    const loadList =  async () => {
+    const loadList = async () => {
       api.get('/medicine')
-          .then((response) => {
-            // console.warn(response)
-            setMedicine(response.data)
-          })
+        .then((response) => {
+          // console.warn(response)
+          setMedicine(response.data)
+        })
     }
     getHour();
     loadList();
   }, [])
 
+  useEffect(() => {
+
+    const date = new Date();
+
+    const hour = new Date();
+
+    const search = medicineList.map((i) => {
+
+      if (formatBrDate(i.date) === formatBrDate(date) && formatHour(i.hour) === formatHour(hour)) {
+        console.warn("teste");
+
+      }
+
+    })
+    if(search){
+
+      console.warn('enter');
+
+    }
+
+
+  },);
+
   const formatBrDate = (dateParams) => {
 
-    const formateDate =  moment(dateParams).format('DD/MM/YYYY');
+    const formateDate = moment(dateParams).format('DD/MM/YYYY');
     return formateDate;
+
+  }
+  const formatHour = (hourParams) => {
+
+    const formatHour = moment(hourParams).format("HH:mm");
+    return formatHour;
 
   }
 
@@ -36,6 +66,8 @@ export default function Medicine() {
     console.warn(hourFormat);
 
   }
+
+
 
   const renderItem = ({ item }) =>
     <Card
@@ -55,6 +87,7 @@ export default function Medicine() {
         renderItem={renderItem}
         keyExtractor={(item) => String(item._id)}
       />
+      <View style={{ height: 20 }} />
     </Container>
   );
 }
