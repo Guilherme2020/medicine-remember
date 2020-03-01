@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 
 export const Container = styled.View`
   flex: 1;
@@ -36,7 +36,7 @@ export const Button = styled.TouchableOpacity`
   elevation: 2;
   padding: 6px;
 
-  ${props => props.onPress}
+  ${props => {props.onPress}}
   ${props => props.activeOpacity}
 `;
 
