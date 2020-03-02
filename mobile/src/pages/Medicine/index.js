@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
-import { Container, List, ModalContainer, ModalContent, ModalTitle, ModalTitleContent, ModalDescription, ModalTextDescription, ModalContainerButton, ModalButton } from './styles';
+import { Container, List, ModalContainer, ModalContent, ModalTitle, ModalTitleContent, ModalDescription, ModalTextDescription, ModalContainerButton, ModalButton, ModalButtonText } from './styles';
 import Card from '../../components/Card/index';
 import api from '../../services/api';
 import moment from "moment";
@@ -76,11 +76,13 @@ export default function Medicine() {
               <ModalContainerButton>
 
                 <ModalButton activeOpacity={0.5} onPress={() => { toggleModal() }}>
-                  Desligar Alarme
+                  <ModalButtonText>
+                    Desligar Alarme
+                  </ModalButtonText>
                 </ModalButton>
               </ModalContainerButton>
 
-            </ModalContent>>
+            </ModalContent>
           </ModalContainer>
 
         </Modal >
@@ -94,7 +96,9 @@ export default function Medicine() {
     const date = new Date();
 
     const hour = new Date();
-    // setCancelAlarm()
+
+    // if(formatBrDate(date) && format)
+
     medicineList.forEach((element) => {
 
       if (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour)) {
@@ -118,7 +122,7 @@ export default function Medicine() {
       // console.warn('alarm dispatch');
 
     } else {
-
+      // setCancelAlarm(false);
       al.stop();
       // console.warn('break')
 

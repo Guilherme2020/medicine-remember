@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 export const Container = styled.View`
 
@@ -44,9 +44,11 @@ export const ModalDescription = styled.View`
 `;
 export const ModalTextDescription = styled.Text`
   text-align: left;
-`
+  font-size: 16px;
+`;
 export const ModalContainerButton = styled.View`
-  margin-top:15%;
+  margin-top:5%;
+  margin-bottom: 5%;
 `;
 export const ModalButton = styled.TouchableOpacity`
   background: #4AC0EF;
@@ -55,7 +57,7 @@ export const ModalButton = styled.TouchableOpacity`
   margin-top: 20px;
   shadow-color: #4AC0EF;
   elevation: 2;
-  padding: 6px;
+  padding: 10px;
 
   ${props => { props.onPress }}
   ${props => props.activeOpacity}
