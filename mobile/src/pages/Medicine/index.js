@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Button, Text } from 'react-native';
-import { Container, List } from './styles';
+import { View } from 'react-native';
+import { Container, List, ModalContainer, ModalContent, ModalTitle, ModalTitleContent, ModalDescription, ModalTextDescription, ModalContainerButton, ModalButton } from './styles';
 import Card from '../../components/Card/index';
 import api from '../../services/api';
 import moment from "moment";
@@ -16,6 +16,7 @@ export default function Medicine() {
   const [al, setAlert] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [cancelAlarm, setCancelAlarm] = useState(false);
+  const [descriptionMedice, setDescriptionMedice] = useState({});
 
   const useInterval = (callback, delay) => {
 
@@ -52,41 +53,36 @@ export default function Medicine() {
       return (
 
         <Modal isVisible={isModalVisible}>
-          <View style={{
-            backgroundColor: 'white',
-            padding: 20,
-            flex: 0.4,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 4,
-            height: 'auto',
-          }}>
-            <View style={{ alignItems: 'center', width: '100%' }}>
-              <View style={{width: '100%',marginTop: 10}}>
+          <ModalContainer>
+            <ModalContent>
+              <ModalTitleContent>
+                <ModalTitle>Informações</ModalTitle>
+              </ModalTitleContent>
+              <ModalDescription>
+                <ModalTextDescription>
+                  Nome do remédio: {descriptionMedice && descriptionMedice.name}
+                </ModalTextDescription>
+              </ModalDescription>
+              <ModalDescription>
+                <ModalTextDescription>
+                  Descrição:{descriptionMedice && descriptionMedice.description}
+                </ModalTextDescription>
+              </ModalDescription>
+              <ModalDescription>
+                <ModalTextDescription>
+                  Horário de uso: {descriptionMedice && descriptionMedice.hour}
+                </ModalTextDescription>
+              </ModalDescription>
+              <ModalContainerButton>
 
-                <Text style={{fontSize: 18,fontWeight:'bold',textAlign:'center'}}>Descrição</Text>
-              </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
-                <Text style={{ textAlign: 'left' }}>
-                  Nome do remédio: Bezetazil
-                </Text>
-              </View>
-              <View style={{ marginTop: 10,  width: '100%' }}>
-                <Text style={{ textAlign: 'left' }}>
-                  Descrição: Dose diária
-                </Text>
-              </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
-                <Text style={{ textAlign: 'left' }}>
-                  Horário de uso: 16hrs
-                </Text>
-              </View>
-              <View style={{ marginTop: '15%', background: 'red' }}>
-                <Button title="Desligar Alarme" onPress={() => toggleModal()} />
-              </View>
+                <ModalButton activeOpacity={0.5} onPress={() => { toggleModal() }}>
+                  Desligar Alarme
+                </ModalButton>
+              </ModalContainerButton>
 
-            </View>
-          </View>
+            </ModalContent>>
+          </ModalContainer>
+
         </Modal >
       );
 
@@ -102,8 +98,9 @@ export default function Medicine() {
     medicineList.forEach((element) => {
 
       if (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour)) {
-        if(cancelAlarm != true){
-          console.warn('true');
+        if (cancelAlarm != true) {
+          // console.warn('true');
+          setDescriptionMedice(element)
           setIshour(true);
           setIsModalVisible(true);
         }
