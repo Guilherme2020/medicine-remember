@@ -12,7 +12,7 @@ module.exports = {
       if (user) {
         res.json(user).send({ message: "Login sucess" })
       }else{
-        res.status(404).send({message: 'user not found'});
+        res.status(404).send({message: 'user not found',status_code: 404});
       }
 
     } catch (e) {
