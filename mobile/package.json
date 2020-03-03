@@ -28,6 +28,7 @@
     "react-navigation-stack": "^1.10.3",
     "react-navigation-tabs": "^2.7.0",
     "reactotron-react-native": "^4.0.3",
+    "socket.io-client": "^2.3.0",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {

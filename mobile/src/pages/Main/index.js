@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { AsyncStorage, Image,Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Container, Section, SectionContent, SectionInfo, InfoText } from './styles';
 
 export default function Main() {

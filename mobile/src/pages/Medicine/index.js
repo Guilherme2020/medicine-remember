@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { Container, List, ModalContainer, ModalContent, ModalTitle, ModalTitleContent, ModalDescription, ModalTextDescription, ModalContainerButton, ModalButton, ModalButtonText } from './styles';
+import io from 'socket.io-client';
 import Card from '../../components/Card/index';
 import api from '../../services/api';
 import moment from "moment";
@@ -8,7 +9,6 @@ import Sound from 'react-native-sound';
 import Modal from "react-native-modal";
 
 const alert = require('../../../android/assets/sounds/alert.wav');
-
 
 export default function Medicine() {
   const [medicineList, setMedicine] = useState([]);
@@ -18,6 +18,44 @@ export default function Medicine() {
   const [cancelAlarm, setCancelAlarm] = useState(false);
   const [descriptionMedice, setDescriptionMedice] = useState({});
   const [countDispatch, setCountDispatch] = useState(0);
+
+  registerToSocket = () => {
+
+    let urlBase = 'http://192.168.100.8:3333';//ip fixo da minha rede
+    let socket = io(urlBase);
+
+    socket.on('medicine', newMedicine => {
+      setMedicine([newMedicine], ...medicineList);
+    })
+
+  };
+  useEffect(() => {
+
+    loadList();
+    registerToSocket()
+    configSound();
+
+
+  }, []);
+
+
+  const loadList = () => {
+    api.get('/medicine')
+      .then((response) => {
+        // console.log(response)
+        setMedicine(response.data)
+      })
+  };
+
+  const configSound = () => {
+
+    Sound.setCategory('PlayBack', true);
+
+    let al = new Sound(alert);
+
+    setAlert(al);
+
+  };
 
   const useInterval = (callback, delay) => {
 
@@ -92,6 +130,7 @@ export default function Medicine() {
     }
 
   }
+
   useInterval(() => {
 
     const date = new Date();
@@ -106,7 +145,6 @@ export default function Medicine() {
         if (countDispatch > 0 && (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour))) {
 
           setCancelAlarm(true);
-          // setCountDispatch(0);
           console.log('teste de count > 0 ');
 
         }
@@ -151,24 +189,7 @@ export default function Medicine() {
 
   }, 1000);
 
-  useEffect(() => {
 
-    Sound.setCategory('PlayBack', true);
-
-    let al = new Sound(alert);
-
-    setAlert(al);
-
-    const loadList = () => {
-      api.get('/medicine')
-        .then((response) => {
-          // console.warn(response)
-          setMedicine(response.data)
-        })
-    }
-    loadList();
-
-  }, [])
 
   const formatBrDate = (dateParams) => {
 
