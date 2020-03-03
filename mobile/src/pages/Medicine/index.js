@@ -19,20 +19,29 @@ export default function Medicine() {
   const [descriptionMedice, setDescriptionMedice] = useState({});
   const [countDispatch, setCountDispatch] = useState(0);
 
-  registerToSocket = () => {
+  const registerToSocket = () => {
 
     let urlBase = 'http://192.168.100.8:3333';//ip fixo da minha rede
     let socket = io(urlBase);
 
     socket.on('medicine', newMedicine => {
-      setMedicine([newMedicine], ...medicineList);
-    })
+      console.log(newMedicine)
+      const newData = medicineList;
+      // setMedicine([...newData, newMedicine]);
+      setMedicine(prevMedicine => ([newMedicine, ...prevMedicine,]))
+    });
 
   };
+
+  useEffect(() => {
+
+    registerToSocket()
+
+  }, [])
+
   useEffect(() => {
 
     loadList();
-    registerToSocket()
     configSound();
 
 
