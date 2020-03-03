@@ -17,6 +17,7 @@ export default function Medicine() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [cancelAlarm, setCancelAlarm] = useState(false);
   const [descriptionMedice, setDescriptionMedice] = useState({});
+  const [countDispatch, setCountDispatch] = useState(0);
 
   const useInterval = (callback, delay) => {
 
@@ -97,39 +98,58 @@ export default function Medicine() {
 
     const hour = new Date();
 
-    // if(formatBrDate(date) && format)
-
     medicineList.forEach((element) => {
 
       if (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour)) {
-        if (cancelAlarm != true) {
-          // console.warn('true');
-          setDescriptionMedice(element)
-          setIshour(true);
-          setIsModalVisible(true);
+
+
+        if (countDispatch > 0 && (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour))) {
+
+          setCancelAlarm(true);
+          // setCountDispatch(0);
+          console.log('teste de count > 0 ');
+
         }
 
+        let count = 0;
+
+        const functionTimer = setInterval(() => {
+
+          count++;
+
+          if (countDispatch > 0) {
+            if (count === 60 & countDispatch > 0) {
+              setCancelAlarm(false);
+              clearInterval(functionTimer);
+            }
+          }
+        }, 1000);
+
+        if (cancelAlarm != true) {
+          console.log('true');
+          setDescriptionMedice(element);
+          setIshour(true);
+          setIsModalVisible(true);
+          setCountDispatch(1);
+        }
       }
-
-
     })
 
     //debug
     if (isHour) {
 
       al.play();
-
-      // console.warn('alarm dispatch');
+      console.log('alarm dispatch');
 
     } else {
-      // setCancelAlarm(false);
+
       al.stop();
-      // console.warn('break')
+      console.log('break');
 
     }
 
 
-  }, 1000)
+  }, 1000);
 
   useEffect(() => {
 
