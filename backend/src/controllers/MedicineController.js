@@ -4,8 +4,9 @@ module.exports = {
 
   async index(req, res) {
 
-    const medicines = await Medicine.find({});
+    const medicines = await Medicine.find({}).sort({_id: -1});
 
+    // .find({}).sort("_id");
     if (medicines) {
       return res.json(medicines);
     }
