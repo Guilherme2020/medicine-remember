@@ -4,6 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.emekalites.react.alarm.notification.ANPackage;
+import android.app.NotificationManager;
+import android.app.NotificationChannel;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
+
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           return packages;
@@ -45,6 +52,30 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
+
+    String id = "my_channel_id";					// The id of the channel.
+    CharSequence name = "my_channel_name";			// The user-visible name of the channel.
+    String description = "my_channel_description";	// The user-visible description of the channel.
+
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_DEFAULT);
+
+      // Configure the notification channel.
+      mChannel.setDescription(description);
+
+      mChannel.enableLights(true);
+      // Sets the notification light color for notifications posted to this
+      // channel, if the device supports this feature.
+      mChannel.setLightColor(Color.RED);
+
+      mChannel.enableVibration(true);
+      mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+      NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+      mNotificationManager.createNotificationChannel(mChannel);
+
+    }
+
   }
 
   /**

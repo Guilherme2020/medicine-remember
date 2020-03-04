@@ -3502,7 +3502,7 @@ hermes-engine@^0.2.1:
   resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.2.1.tgz#25c0f1ff852512a92cb5c5cc47cf967e1e722ea2"
   integrity sha512-eNHUQHuadDMJARpaqvlCZoK/Nitpj6oywq3vQ3wCwEsww5morX34mW5PmKWQTO7aU0ck0hgulxR+EVDlXygGxQ==
 
-hoist-non-react-statics@^2.3.1:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
@@ -5855,7 +5855,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5933,6 +5933,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-alarm-notification@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-alarm-notification/-/react-native-alarm-notification-1.3.1.tgz#ee4334234f2c91760f464a82254f9012b0f3eeb4"
+  integrity sha512-B4XC+xYmT3ledEgru8Jup7zTyqQ97ldCZLQx25kUyXJTsRlL6RM8lca6w0SuPSJw33LoTnlSFvE4PNLhz7EFkw==
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
@@ -5944,6 +5949,14 @@ react-native-animated-input@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-animated-input/-/react-native-animated-input-1.0.1.tgz#a05b9ec8ffadde2f602af729bb1b04dffb641ffa"
   integrity sha512-hN3YnWsTTmqsEETh95giQLtKRxxpv3ACW0NoZBrMHlt3yqRjEk5jcu0o77Hr1RxSUUvjwj8sO8zOaiWL7zxdew==
+
+react-native-app-state@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-app-state/-/react-native-app-state-1.0.4.tgz#84a2095d4cf1176d038179f7fd6e22d839f748fb"
+  integrity sha512-VNu4Htqs/gKRc9XVoiK+nDNCmwMYLkqxXPyw0/3w1Aqk+xDLPJvOuBZZu+cRfZ34LuqxLoSzc34PDzsxUm8k7A==
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    prop-types "^15.6.1"
 
 react-native-gesture-handler@^1.6.0:
   version "1.6.0"

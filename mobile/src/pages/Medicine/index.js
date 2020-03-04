@@ -1,14 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { View, DeviceEventEmitter } from 'react-native';
 import { Container, List, ModalContainer, ModalContent, ModalTitle, ModalTitleContent, ModalDescription, ModalTextDescription, ModalContainerButton, ModalButton, ModalButtonText } from './styles';
 import io from 'socket.io-client';
+import ReactNativeAN from 'react-native-alarm-notification';
+import AppState from 'react-native-app-state';
 import Card from '../../components/Card/index';
 import api from '../../services/api';
 import moment from "moment";
 import Sound from 'react-native-sound';
 import Modal from "react-native-modal";
 
+
+// set exact date time | Format: dd-MM-yyyy HH:mm:ss
+
 const alert = require('../../../android/assets/sounds/alert.wav');
+
+
+
 
 export default function Medicine() {
   const [medicineList, setMedicine] = useState([]);
@@ -18,6 +26,7 @@ export default function Medicine() {
   const [cancelAlarm, setCancelAlarm] = useState(false);
   const [descriptionMedice, setDescriptionMedice] = useState({});
   const [countDispatch, setCountDispatch] = useState(0);
+  const [notify, setNotify] = useState(true);
 
   const registerToSocket = () => {
 
@@ -33,19 +42,84 @@ export default function Medicine() {
 
   };
 
-  useEffect(() => {
+  const ShedulleNotification = () => {
 
-    registerToSocket()
 
-  }, [])
+  }
+
+  const method = () => {
+    const date = new Date();
+
+    const hour = new Date();
+    // const fireDate = '04-03-2020 09:14:00';
+
+    // let alarmNotifData ;
+    console.log('teste');
+
+
+
+    // DD/MM/YYYY HH:mm
+    let dateShedulle;
+    let hourShedulle;
+
+
+    console.log('antes do forEach')
+    medicineList.forEach((element) => {
+      console.log('dentro do foreach')
+      console.log("moment", moment(element.date).format('DD-MM-YYYY HH:mm:ss'));
+      console.log('date atual', moment(date).format('DD-MM-YYYY HH:mm:ss'));
+      if (moment(element.date).format('DD-MM-YYYY') === moment(date).format('DD-MM-YYYY')) {
+        console.log('entrou')
+        dateShedulle = moment(element.date).format('DD-MM-YYYY HH:mm:ss')
+        hourShedulle = element.hour
+      }
+
+    });
+
+    const alarmNotifData = {
+      id: "12345",                                  // Required
+      title: "Hora de Tomar o remédio",               // Required
+      message: "Abra o aplicativo e visualize o horário do seu medicamento",           // Required
+      channel: "my_channel_id",                     // Required. Same id as specified in MainApplication's onCreate method
+      ticker: "My Notification Ticker",
+      auto_cancel: true,                            // default: true
+      vibrate: true,
+      vibration: 100,                               // default: 100, no vibration if vibrate: false
+      small_icon: "ic_launcher",                    // Required
+      large_icon: "ic_launcher",
+      play_sound: true,
+      sound_name: alert,                             // Plays custom notification ringtone if sound_name: null
+      color: "red",
+      schedule_once: true,                          // Works with ReactNativeAN.scheduleAlarm so alarm fires once
+      tag: 'some_tag',
+      fire_date: dateShedulle,
+      // fire_date: moment(element.date).format('dd-MM-yyyy HH:mm:ss'),
+      // Date for firing alarm, Required for ReactNativeAN.scheduleAlarm.
+      // const formateDate = moment(dateParams).format('DD/MM/YYYY');
+      // You can add any additional data that is important for the notification
+      // It will be added to the PendingIntent along with the rest of the bundle.
+      // e.g.
+      data: { foo: "bar" },
+    };
+    ReactNativeAN.scheduleAlarm(alarmNotifData);
+
+  }
 
   useEffect(() => {
 
     loadList();
     configSound();
 
-
   }, []);
+
+  useEffect(() => {
+
+    registerToSocket()
+    method();
+
+  }, [])
+
+
 
 
   const loadList = () => {
@@ -85,10 +159,21 @@ export default function Medicine() {
     }, [delay]);
 
   };
+  const onAppStateChange = (appState, prevAppState) => {
+    console.log('onAppStateChange()', prevAppState, '=>', appState);
+    if (prevAppState === 'active' && appState === 'background') {
+      console.log("aqui faço alguma coisa");
+      // method();
+    }
+    // E.g. output: "App onAppStateChange() background => active"
+  };
   const toggleModal = () => {
-
+    setNotify(false)
     setIsModalVisible(false);
     setIshour(false);
+    DeviceEventEmitter.removeListener('OnNotificationDismissed');
+    DeviceEventEmitter.removeListener('OnNotificationOpened');
+    ReactNativeAN.removeAllFiredNotifications()
     setCancelAlarm(true);
     al.stop();
 
@@ -146,13 +231,16 @@ export default function Medicine() {
 
     const hour = new Date();
 
-    medicineList.forEach((element) => {
+    if (notify != false) {
+      method();
+    }
 
+    medicineList.forEach((element) => {
+      //
       if (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour)) {
 
 
         if (countDispatch > 0 && (formatBrDate(element.date) === formatBrDate(date) && element.hour === formatHour(hour))) {
-
           setCancelAlarm(true);
           console.log('teste de count > 0 ');
 
@@ -237,14 +325,22 @@ export default function Medicine() {
 
   return (
     <Container>
-      <List
-        data={medicineList}
-        renderItem={renderItem}
-        keyExtractor={(item) => String(item._id)}
-      />
-      {renderModal()}
+      <AppState onChange={onAppStateChange}>
+        {({ appState }) => (
+          <View>
+            <Text>App state: {appState}</Text>
+          </View>
+        )}
+        <List
+          data={medicineList}
+          renderItem={renderItem}
+          keyExtractor={(item) => String(item._id)}
+        />
+        {renderModal()}
 
-      <View style={{ height: 20 }} />
+        <View style={{ height: 20 }} />
+      </AppState>
+
     </Container>
   );
 }
