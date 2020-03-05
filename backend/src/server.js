@@ -10,6 +10,7 @@ const server = require('http').Server(app);
 
 const io = require('socket.io')(server);
 
+require('dotenv').config();
 
 mongoose.connect('mongodb+srv://guilherme:dev1212@cluster0-ptfgq.mongodb.net/medicine-reminder?retryWrites=true&w=majority',
   {
@@ -30,4 +31,4 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-server.listen(3333);  
+server.listen(process.env.PORT || 3333);  
