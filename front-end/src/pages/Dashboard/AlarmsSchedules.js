@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from '@material-ui/core/Link';
 import api from '../../services/api';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,11 +7,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,25 +14,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Fade from '@material-ui/core/Fade';
 import Title from './Title';
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
 
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 const useStyles = makeStyles(theme => ({
   seeMore: {
@@ -57,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Orders() {
+export default function AlarmsSchedules() {
   const classes = useStyles();
   const [medicines, setMedicines] = useState([0]);
   const [open, setOpen] = useState(false);
@@ -65,11 +43,7 @@ export default function Orders() {
   const [date, setDate] = useState(new Date());
   const [description, setDescription] = useState('');
   const [hour, setHour] = useState('');
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-
-
-
+  const [errModal, setErrModal] = useState(false)
   useEffect(() => {
     loadData();
   }, [])
@@ -86,6 +60,14 @@ export default function Orders() {
   const handleOpen = () => {
     setOpen(true);
   };
+  
+  // const handleOpenErrModal = () => {
+  //   setErrModal(true)
+  // };
+
+  const handleCloseErrModal = () => {
+    setErrModal(false)
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -95,13 +77,15 @@ export default function Orders() {
     setHour('');
 
   };
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
+
   const register = async () => {
 
-    const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
+    // const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
+    // const dateFormat = moment(date).format(`yyyy-MM-dd ${hour}:00`);
+    const dateFormat = `${date} ${hour}:00`;
 
+    console.log("dateFormat", dateFormat);
+    // yyyy-MM-dd
     let url = '/medicine';
     let body = {
       name: name,
@@ -112,21 +96,26 @@ export default function Orders() {
     console.log('body', body);
     const user_id = localStorage.getItem('user');
     console.log(user_id)
+    if (name !== '' && description !== '' && hour !== '' && date !== '') {
+      await api.post(url, body, {
+        headers: {
+          user_id: user_id,
+          "Content-Type": "application/json"
+        }
+      }).then((response) => {
+        console.log("create", response.data)
+        //loading api
+        loadData();
+        handleClose();
+      }).catch((err) => {
+        handleClose();
+        console.log(err);
+        // console.log(err.response)
+      });
+    }else{
+      setErrModal(true)
+    }
     
-    await api.post(url, body, {
-      headers: {
-        user_id: user_id,
-        "Content-Type": "application/json"
-      }
-    }).then((response) => {
-      console.log(response.data)
-      //loading api
-      loadData();
-      handleClose();
-    }).catch((err) => { 
-      handleClose();
-      console.log(err.response)});
-
   }
   const renderModal = () => {
     return (
@@ -148,7 +137,6 @@ export default function Orders() {
             fullWidth
           />
           <TextField
-            // autoFocus
             margin="dense"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
@@ -163,8 +151,11 @@ export default function Orders() {
             defaultValue={date}
             className={classes.textField}
             value={date}
-            // value={moment(date).format('DD/MM/YYYY')}
-            onChange={(event) => setDate(event.target.value)}
+            onChange={(event) => {
+              console.log("data", event.target.value)
+              setDate(event.target.value)
+            }
+            }
             InputLabelProps={{
               shrink: true,
             }}
@@ -196,6 +187,28 @@ export default function Orders() {
       </Dialog>
     )
   }
+  const renderModalAlertErr = () => {
+    return (
+      <Dialog
+        open={errModal}
+        onClose={handleCloseErrModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Por Favor Preencha todos os campos :)
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseErrModal} color="primary">
+            ok
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
   return (
     <React.Fragment>
       <Title>Agendamento Recentes</Title>
@@ -206,22 +219,21 @@ export default function Orders() {
             <TableCell>Data</TableCell>
             <TableCell>Horário</TableCell>
             <TableCell>Descrição</TableCell>
-            {/* <TableCell align="right">Sale Amount</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {medicines && medicines.map(row => (
-            <TableRow key={row.id}>
+            <TableRow key={row._id}>
               <TableCell>{row.name}</TableCell>
               <TableCell>{moment(row.date).format('DD/MM/YYYY HH:mm:ss')}</TableCell>
               <TableCell>{row.hour}</TableCell>
               <TableCell>{row.description}</TableCell>
-              {/* <TableCell align="right">{row.amount}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
       </Table>
       {renderModal()}
+      {renderModalAlertErr()}
       <div className={classes.seeMore}>
         <button onClick={handleOpen}>
           Adicionar um Alarme de medicamento
