@@ -1,15 +1,14 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.View`
-
   flex: 1;
   align-items: center;
 `;
 export const List = styled.FlatList.attrs({
-  showsVerticalScrollIndicator: false,
+  showsVerticalScrollIndicator: false
 })`
   flex: 1;
-  background-color: #FFF;
+  background-color: #fff;
 `;
 
 export const ModalContainer = styled.View`
@@ -34,7 +33,7 @@ export const ModalTitleContent = styled.View`
 
 export const ModalTitle = styled.Text`
   font-size: 18px;
-  font-weight:bold;
+  font-weight: bold;
   text-align: center;
 `;
 
@@ -47,19 +46,21 @@ export const ModalTextDescription = styled.Text`
   font-size: 16px;
 `;
 export const ModalContainerButton = styled.View`
-  margin-top:5%;
+  margin-top: 5%;
   margin-bottom: 5%;
 `;
 export const ModalButton = styled.TouchableOpacity`
-  background: #4AC0EF;
+  background: #4ac0ef;
   align-items: center;
   border-radius: 20px;
   margin-top: 20px;
-  shadow-color: #4AC0EF;
+  shadow-color: #4ac0ef;
   elevation: 2;
   padding: 10px;
 
-  ${props => { props.onPress }}
+  ${props => {
+    props.onPress;
+  }}
   ${props => props.activeOpacity}
 `;
 

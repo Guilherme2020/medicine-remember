@@ -1,14 +1,10 @@
-import api from '../api';
+import api from "../api";
 
 const MedicinesService = {
-
   medicines: async () => {
-
-    const response = await api.get('/medicine');
-    // console.warn('response',response);
-
+    const response = await api.get("/medicine");
+    console.warn("response", response);
   }
-
-}
+};
 
 export default MedicinesService;

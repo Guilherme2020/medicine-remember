@@ -18,7 +18,7 @@ export const Header = styled.View``;
 export const Content = styled.View``;
 
 export const DateRemedy = styled.View`
-  
+
 `;
 
 export const Title = styled.Text``;

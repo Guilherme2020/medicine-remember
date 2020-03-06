@@ -1,3 +1,3 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
 
-export const login = user => AsyncStorage.setItem('user', JSON.stringify(user));
+export const login = user => AsyncStorage.setItem("user", JSON.stringify(user));

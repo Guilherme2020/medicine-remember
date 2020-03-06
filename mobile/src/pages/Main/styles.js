@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.View`
   flex: 1;
 `;
 
 export const Section = styled.View`
-  background: #4AC0EF;
+  background: #4ac0ef;
   width: 100%;
   height: 320px;
   align-items: center;
@@ -18,9 +18,8 @@ export const SectionContent = styled.View`
   width: 200px;
   height: 150px;
 
- align-items: center;
+  align-items: center;
   justify-content: center;
-
 `;
 
 export const SectionInfo = styled.View`
@@ -28,7 +27,6 @@ export const SectionInfo = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  /* background: red; */
   width: 100%;
   height: 100%;
 `;
