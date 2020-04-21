@@ -6,15 +6,17 @@ const TabScreen = createMaterialTopTabNavigator(
     Main: {
       screen: Main,
       navigationOptions: () => ({
-        header: null
-      })
+        header: null,
+        title: "Home",
+      }),
     },
     Medicine: {
       screen: Medicine,
       navigationOptions: () => ({
-        header: null
-      })
-    }
+        header: null,
+        title: "Medicamentos",
+      }),
+    },
   },
   {
     tabBarPosition: "bottom",
@@ -26,16 +28,16 @@ const TabScreen = createMaterialTopTabNavigator(
 
       inactiveTintColor: "#F8F8F8",
       style: {
-        backgroundColor: "#4AC0EF"
+        backgroundColor: "#4AC0EF",
       },
       labelStyle: {
-        textAlign: "center"
+        textAlign: "center",
       },
       indicatorStyle: {
         borderBottomColor: "#fff",
-        borderBottomWidth: 2
-      }
-    }
+        borderBottomWidth: 2,
+      },
+    },
   }
 );
 

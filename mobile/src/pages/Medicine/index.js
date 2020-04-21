@@ -11,7 +11,7 @@ import {
   ModalTextDescription,
   ModalContainerButton,
   ModalButton,
-  ModalButtonText
+  ModalButtonText,
 } from "./styles";
 import io from "socket.io-client";
 import ReactNativeAN from "react-native-alarm-notification";
@@ -41,9 +41,9 @@ export default function Medicine() {
     const urlBase = "https://medreminder-backend.herokuapp.com";
     let socket = io(urlBase);
 
-    socket.on("medicine", newMedicine => {
+    socket.on("medicine", (newMedicine) => {
       console.log(newMedicine);
-      setMedicine(prevMedicine => [newMedicine, ...prevMedicine]);
+      setMedicine((prevMedicine) => [newMedicine, ...prevMedicine]);
     });
   };
 
@@ -55,9 +55,9 @@ export default function Medicine() {
     // DD/MM/YYYY HH:mm
 
     let dateShedulle;
-    let idShedulle;
+    let idShedulle = "212";
     console.log("antes do forEach");
-    medicineList.forEach(element => {
+    medicineList.forEach((element) => {
       console.log("dentro do foreach");
       console.log("moment", moment(element.date).format("DD-MM-YYYY HH:mm:ss"));
       console.log("date atual", moment(date).format("DD-MM-YYYY HH:mm:ss"));
@@ -68,7 +68,7 @@ export default function Medicine() {
         console.log("entrou");
         dateShedulle = moment(element.date).format("DD-MM-YYYY HH:mm:ss");
         hourShedulle = element.hour;
-        idShedulle = element._id;
+        // idShedulle = element._id;
       }
     });
 
@@ -95,7 +95,7 @@ export default function Medicine() {
       // You can add any additional data that is important for the notification
       // It will be added to the PendingIntent along with the rest of the bundle.
       // e.g.
-      data: { foo: "bar" }
+      data: { foo: "bar" },
     };
     ReactNativeAN.scheduleAlarm(alarmNotifData);
   };
@@ -104,11 +104,11 @@ export default function Medicine() {
     loadList();
     configSound();
     registerToSocket();
-    method();
+    // method();
   }, []);
 
   const loadList = () => {
-    api.get("/medicine").then(response => {
+    api.get("/medicine").then((response) => {
       // console.log(response)
       setMedicine(response.data);
     });
@@ -208,7 +208,7 @@ export default function Medicine() {
       method();
     }
 
-    medicineList.forEach(element => {
+    medicineList.forEach((element) => {
       //
       if (
         formatBrDate(element.date) === formatBrDate(date) &&
@@ -256,11 +256,11 @@ export default function Medicine() {
     }
   }, 1000);
 
-  const formatBrDate = dateParams => {
+  const formatBrDate = (dateParams) => {
     const formateDate = moment(dateParams).format("DD/MM/YYYY");
     return formateDate;
   };
-  const formatHour = hourParams => {
+  const formatHour = (hourParams) => {
     const formatHour = moment(hourParams).format("HH:mm");
     return formatHour;
   };
@@ -295,7 +295,7 @@ export default function Medicine() {
         <List
           data={medicineList}
           renderItem={renderItem}
-          keyExtractor={item => String(item._id)}
+          keyExtractor={(item) => String(item._id)}
         />
         {renderModal()}
 
