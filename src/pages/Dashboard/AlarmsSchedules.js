@@ -1,35 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
-import moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Title from './Title';
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
+import moment from "moment";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Title from "./Title";
 
-
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
   },
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -39,92 +37,93 @@ export default function AlarmsSchedules() {
   const classes = useStyles();
   const [medicines, setMedicines] = useState([0]);
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
-  const [description, setDescription] = useState('');
-  const [hour, setHour] = useState('');
-  const [errModal, setErrModal] = useState(false)
+  const [description, setDescription] = useState("");
+  const [hour, setHour] = useState("");
+  const [errModal, setErrModal] = useState(false);
   useEffect(() => {
     loadData();
-  }, [])
+  }, []);
   const loadData = async () => {
-
-    await api.get('/medicine')
+    await api
+      .get("/medicine")
       .then((response) => {
         console.log("response of medicine", response.data);
         setMedicines(response.data);
       })
       .catch((e) => console.log(e));
-
-  }
+  };
   const handleOpen = () => {
     setOpen(true);
   };
-  
-  // const handleOpenErrModal = () => {
-  //   setErrModal(true)
-  // };
 
   const handleCloseErrModal = () => {
-    setErrModal(false)
-  }
+    setErrModal(false);
+  };
 
   const handleClose = () => {
     setOpen(false);
-    setName('')
+    setName("");
     setDate(new Date());
-    setDescription('');
-    setHour('');
-
+    setDescription("");
+    setHour("");
   };
 
   const register = async () => {
-
     // const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
     // const dateFormat = moment(date).format(`yyyy-MM-dd ${hour}:00`);
     const dateFormat = `${date} ${hour}:00`;
 
     console.log("dateFormat", dateFormat);
     // yyyy-MM-dd
-    let url = '/medicine';
+    let url = "/medicine";
     let body = {
       name: name,
       description: description,
       hour,
       date: dateFormat,
+    };
+    console.log("body", body);
+    const user_id = localStorage.getItem("user");
+    console.log(user_id);
+    if (name !== "" && description !== "" && hour !== "" && date !== "") {
+      await api
+        .post(url, body, {
+          headers: {
+            user_id: user_id,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log("create", response.data);
+          //loading api
+          loadData();
+          handleClose();
+        })
+        .catch((err) => {
+          handleClose();
+          console.log(err);
+          // console.log(err.response)
+        });
+    } else {
+      setErrModal(true);
     }
-    console.log('body', body);
-    const user_id = localStorage.getItem('user');
-    console.log(user_id)
-    if (name !== '' && description !== '' && hour !== '' && date !== '') {
-      await api.post(url, body, {
-        headers: {
-          user_id: user_id,
-          "Content-Type": "application/json"
-        }
-      }).then((response) => {
-        console.log("create", response.data)
-        //loading api
-        loadData();
-        handleClose();
-      }).catch((err) => {
-        handleClose();
-        console.log(err);
-        // console.log(err.response)
-      });
-    }else{
-      setErrModal(true)
-    }
-    
-  }
+  };
   const renderModal = () => {
     return (
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">
+          Adicionar um medicamento
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
+            Cadastre uma descrição do medicamento bem como o horário que deseja
+            receber o alerta.
           </DialogContentText>
           <TextField
             autoFocus
@@ -152,10 +151,9 @@ export default function AlarmsSchedules() {
             className={classes.textField}
             value={date}
             onChange={(event) => {
-              console.log("data", event.target.value)
-              setDate(event.target.value)
-            }
-            }
+              console.log("data", event.target.value);
+              setDate(event.target.value);
+            }}
             InputLabelProps={{
               shrink: true,
             }}
@@ -185,8 +183,8 @@ export default function AlarmsSchedules() {
           </Button>
         </DialogActions>
       </Dialog>
-    )
-  }
+    );
+  };
   const renderModalAlertErr = () => {
     return (
       <Dialog
@@ -195,7 +193,9 @@ export default function AlarmsSchedules() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Por Favor Preencha todos os campos :)
@@ -207,8 +207,8 @@ export default function AlarmsSchedules() {
           </Button>
         </DialogActions>
       </Dialog>
-    )
-  }
+    );
+  };
   return (
     <React.Fragment>
       <Title>Agendamento Recentes</Title>
@@ -222,25 +222,24 @@ export default function AlarmsSchedules() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {medicines && medicines.map(row => (
-            <TableRow key={row._id}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{moment(row.date).format('DD/MM/YYYY HH:mm:ss')}</TableCell>
-              <TableCell>{row.hour}</TableCell>
-              <TableCell>{row.description}</TableCell>
-            </TableRow>
-          ))}
+          {medicines &&
+            medicines.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>
+                  {moment(row.date).format("DD/MM/YYYY HH:mm:ss")}
+                </TableCell>
+                <TableCell>{row.hour}</TableCell>
+                <TableCell>{row.description}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
       {renderModal()}
       {renderModalAlertErr()}
       <div className={classes.seeMore}>
-        <button onClick={handleOpen}>
-          Adicionar um Medicamento
-        </button>
-
+        <button onClick={handleOpen}>Adicionar um Medicamento</button>
       </div>
-
     </React.Fragment>
   );
 }
