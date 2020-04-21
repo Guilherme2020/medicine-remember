@@ -71,9 +71,9 @@ export default function AlarmsSchedules() {
   };
 
   const register = async () => {
-    // const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
+    const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
     // const dateFormat = moment(date).format(`yyyy-MM-dd ${hour}:00`);
-    const dateFormat = `${date} ${hour}:00`;
+    // const dateFormat = `${date} ${hour}:00`;
 
     console.log("dateFormat", dateFormat);
     // yyyy-MM-dd
