@@ -71,9 +71,9 @@ export default function AlarmsSchedules() {
   };
 
   const register = async () => {
-    const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
+    // const dateFormat = moment(date).format(`DD/MM/YYYY ${hour}:00`);
     // const dateFormat = moment(date).format(`yyyy-MM-dd ${hour}:00`);
-    // const dateFormat = `${date} ${hour}:00`;
+    const dateFormat = `${date} ${hour}:00`;
 
     console.log("dateFormat", dateFormat);
     // yyyy-MM-dd
@@ -227,7 +227,7 @@ export default function AlarmsSchedules() {
               <TableRow key={row._id}>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>
-                  {moment(row.date).format("DD/MM/YYYY HH:mm:ss")}
+                  {moment(row.date).format("DD/MM/YYYY")}
                 </TableCell>
                 <TableCell>{row.hour}</TableCell>
                 <TableCell>{row.description}</TableCell>
