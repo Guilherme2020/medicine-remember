@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Title from './Title';
-
+import React from "react";
+import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Title from "./Title";
+import moment from "moment";
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -16,6 +16,10 @@ const useStyles = makeStyles({
 
 export default function Deposits() {
   const classes = useStyles();
+  const dateFormat = () => {
+    const dateFormat = moment(new Date()).format(`DD/MM/YYYY`);
+    return dateFormat;
+  };
   return (
     <React.Fragment>
       <Title>Número de agendamentos</Title>
@@ -23,11 +27,11 @@ export default function Deposits() {
         30024
       </Typography>
       <Typography color="textSecondary" className={classes.depositContext}>
-        em 15 Março, 2020
+        em {dateFormat()}
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
+          {/* View balance */}
         </Link>
       </div>
     </React.Fragment>

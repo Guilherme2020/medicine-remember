@@ -236,7 +236,7 @@ export default function AlarmsSchedules() {
       {renderModalAlertErr()}
       <div className={classes.seeMore}>
         <button onClick={handleOpen}>
-          Adicionar um Alarme de medicamento
+          Adicionar um Medicamento
         </button>
 
       </div>
