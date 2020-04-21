@@ -55,7 +55,7 @@ export default function Medicine() {
     // DD/MM/YYYY HH:mm
 
     let dateShedulle;
-
+    let idShedulle;
     console.log("antes do forEach");
     medicineList.forEach(element => {
       console.log("dentro do foreach");
@@ -68,11 +68,12 @@ export default function Medicine() {
         console.log("entrou");
         dateShedulle = moment(element.date).format("DD-MM-YYYY HH:mm:ss");
         hourShedulle = element.hour;
+        idShedulle = element._id;
       }
     });
 
     const alarmNotifData = {
-      id: "12345", // Required
+      id: idShedulle, // Required
       title: "Hora de Tomar o remédio", // Required
       message: "Abra o aplicativo e visualize o horário do seu medicamento", // Required
       channel: "my_channel_id", // Required. Same id as specified in MainApplication's onCreate method
