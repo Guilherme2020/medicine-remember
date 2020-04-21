@@ -99,7 +99,7 @@ export default function Login({ history }) {
 
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            label="Lembrar"
           />
           <Button
             type="submit"
@@ -113,12 +113,12 @@ export default function Login({ history }) {
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                Esqueceu a Senha?
               </Link>
             </Grid>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Não tem uma conta? Cadastre-se"}
               </Link>
             </Grid>
           </Grid>
