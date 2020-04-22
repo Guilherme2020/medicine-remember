@@ -205,7 +205,7 @@ export default function Medicine() {
     const hour = new Date();
 
     if (notify != false) {
-      method();
+      // method();
     }
 
     medicineList.forEach((element) => {
